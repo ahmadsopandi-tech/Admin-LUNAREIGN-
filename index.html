@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | LUNAREIGN</title>
+    <meta name="description" content="Admin Panel for LUNAREIGN">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Global Styles */
+        :root {
+            --black: #0A0A0A;
+            --cream: #F9F7F2;
+            --dark-gray: #333333;
+            --gold: #CBA135;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--black);
+            background-color: var(--cream);
+            line-height: 1.6;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        a {
+            text-decoration: none;
+            color: var(--black);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--gold);
+            color: var(--black);
+            border: none;
+            border-radius: 2px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+        
+        .btn:hover {
+            background-color: var(--black);
+            color: var(--gold);
+        }
+        
+        .btn-danger {
+            background-color: #d9534f;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c9302c;
+            color: white;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Login Styles */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--cream);
+        }
+        
+        .login-form {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .login-form h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--black);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(10, 10, 10, 0.2);
+            border-radius: 2px;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        /* Admin Dashboard Styles */
+        .admin-dashboard {
+            display: none;
+            min-height: 100vh;
+            background-color: var(--cream);
+        }
+        
+        .admin-header {
+            background-color: var(--black);
+            color: var(--cream);
+            padding: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-header .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--gold);
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        
+        .admin-nav {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .admin-nav a {
+            color: var(--cream);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .admin-nav a:hover {
+            color: var(--gold);
+        }
+        
+        .admin-content {
+            padding: 30px 0;
+        }
+        
+        .admin-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(10, 10, 10, 0.1);
+        }
+        
+        th {
+            background-color: rgba(10, 10, 10, 0.05);
+            font-weight: 600;
+        }
+        
+        tr:hover {
+            background-color: rgba(10, 10, 10, 0.02);
+        }
+        
+        /* Product Form Styles */
+        .product-form {
+            display: none;
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--gold);
+            color: var(--black);
+            padding: 15px 25px;
+            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .admin-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .admin-nav {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .form-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <div id="loginContainer" class="login-container">
+        <form id="loginForm" class="login-form">
+            <h1>Admin Login</h1>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn" style="width: 100%;">Login</button>
+        </form>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="admin-dashboard">
+        <header class="admin-header">
+            <div class="container">
+                <a href="#" class="logo">LR ADMIN</a>
+                <nav class="admin-nav">
+                    <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </nav>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="admin-content">
+                <!-- Orders Section -->
+                <div class="admin-section">
+                    <div class="section-header">
+                        <h2>Pre-Orders</h2>
+                        <span id="ordersCount" class="badge">0 Orders</span>
+                    </div>
+                    <div class="table-container">
+                        <table id="ordersTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nama</th>
+                                    <th>Produk</th>
+                                    <th>Ukuran</th>
+                                    <th>Jumlah</th>
+                                    <th>Total</th>
+                                    <th>Tanggal</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Orders will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Products Section -->
+                <div class="admin-section">
+                    <div class="section-header">
+                        <h2>Products</h2>
+                        <button id="addProductBtn" class="btn"><i class="fas fa-plus"></i> Add Product</button>
+                    </div>
+                    <div class="table-container">
+                        <table id="productsTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Image</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Products will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Add/Edit Product Form -->
+                <div id="productForm" class="product-form">
+                    <h2 id="productFormTitle">Add New Product</h2>
+                    <form id="addEditProductForm">
+                        <input type="hidden" id="productId" name="productId">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="productName">Product Name</label>
+                                <input type="text" id="productName" name="productName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="productPrice">Price (Rp)</label>
+                                <input type="number" id="productPrice" name="productPrice" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="productDescription">Description</label>
+                                <textarea id="productDescription" name="productDescription" rows="3" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="productImage">Image URL</label>
+                                <input type="text" id="productImage" name="productImage" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn">Save Product</button>
+                            <button type="button" id="cancelProductBtn" class="btn btn-danger">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // DOM Elements
+        const loginContainer = document.getElementById('loginContainer');
+        const adminDashboard = document.getElementById('adminDashboard');
+        const loginForm = document.getElementById('loginForm');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const ordersTable = document.getElementById('ordersTable').querySelector('tbody');
+        const productsTable = document.getElementById('productsTable').querySelector('tbody');
+        const ordersCount = document.getElementById('ordersCount');
+        const addProductBtn = document.getElementById('addProductBtn');
+        const productForm = document.getElementById('productForm');
+        const addEditProductForm = document.getElementById('addEditProductForm');
+        const cancelProductBtn = document.getElementById('cancelProductBtn');
+        const productFormTitle = document.getElementById('productFormTitle');
+        const toast = document.getElementById('toast');
+
+        // Check if user is already logged in
+        document.addEventListener('DOMContentLoaded', () => {
+            const isLoggedIn = localStorage.getItem('lunareign_admin_logged_in');
+            if (isLoggedIn === 'true') {
+                showDashboard();
+            }
+        });
+
+        // Login Form Submission
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Check credentials
+            if (email === 'officiaLUNAREIGN@gmail.com' && password === 'BRANDLOKALPELAJAR') {
+                // Set login status
+                localStorage.setItem('lunareign_admin_logged_in', 'true');
+                
+                // Show dashboard
+                showDashboard();
+                
+                // Show success message
+                showToast('Login successful!');
+            } else {
+                // Show error message
+                showToast('Invalid email or password!', 'error');
+            }
+        });
+
+        // Logout
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Clear login status
+            localStorage.setItem('lunareign_admin_logged_in', 'false');
+            
+            // Show login form
+            loginContainer.style.display = 'flex';
+            adminDashboard.style.display = 'none';
+            
+            // Show message
+            showToast('Logged out successfully!');
+        });
+
+        // Show Dashboard
+        function showDashboard() {
+            loginContainer.style.display = 'none';
+            adminDashboard.style.display = 'block';
+            
+            // Load orders
+            loadOrders();
+            
+            // Load products
+            loadProducts();
+        }
+
+        // Load Orders
+        function loadOrders() {
+            // Get orders from localStorage
+            const orders = JSON.parse(localStorage.getItem('lunareign_orders')) || [];
+            
+            // Clear table
+            ordersTable.innerHTML = '';
+            
+            // Update orders count
+            ordersCount.textContent = `${orders.length} Orders`;
+            
+            // Add orders to table
+            orders.forEach((order, index) => {
+                const row = document.createElement('tr');
+                
+                // Format date
+                const date = new Date(order.timestamp);
+                const formattedDate = date.toLocaleDateString('id-ID') + ' ' + date.toLocaleTimeString('id-ID');
+                
+                // Calculate total
+                const total = parseInt(order.productPrice.replace(/[^\d]/g, '')) * parseInt(order.productQuantity);
+                
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${order.customerName}</td>
+                    <td>${order.productName}</td>
+                    <td>${order.productSize}</td>
+                    <td>${order.productQuantity}</td>
+                    <td>Rp ${total.toLocaleString('id-ID')}</td>
+                    <td>${formattedDate}</td>
+                    <td>
+                        <button class="btn btn-danger" onclick="deleteOrder(${index})">Delete</button>
+                    </td>
+                `;
+                
+                ordersTable.appendChild(row);
+            });
+        }
+
+        // Delete Order
+        function deleteOrder(index) {
+            if (confirm('Are you sure you want to delete this order?')) {
+                // Get orders
+                const orders = JSON.parse(localStorage.getItem('lunareign_orders')) || [];
+                
+                // Remove order
+                orders.splice(index, 1);
+                
+                // Save back to localStorage
+                localStorage.setItem('lunareign_orders', JSON.stringify(orders));
+                
+                // Reload orders
+                loadOrders();
+                
+                // Show message
+                showToast('Order deleted successfully!');
+            }
+        }
+
+        // Load Products
+        function loadProducts() {
+            // Get products from localStorage
+            const products = JSON.parse(localStorage.getItem('lunareign_products')) || [
+                {
+                    id: 1,
+                    name: "The Reign Tee",
+                    price: 100000,
+                    description: "100% Premium Cotton dengan logo LR di depan dan desain mahkota di belakang.",
+                    image: "https://z-cdn-media.chatglm.cn/files/4c9b1041-15b1-42bc-922c-50b61984aa70_IMG-20251030-WA0021.jpg?auth_key=1793352017-989ec5ce1adb48b5ab0b602f4b3542f1-0-9852de0b75e3581b80c0403839d6badf"
+                }
+            ];
+            
+            // Clear table
+            productsTable.innerHTML = '';
+            
+            // Add products to table
+            products.forEach((product, index) => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${product.id}</td>
+                    <td>${product.name}</td>
+                    <td>Rp ${product.price.toLocaleString('id-ID')}</td>
+                    <td><img src="${product.image}" alt="${product.name}" style="width: 50px; height: 50px; object-fit: cover;"></td>
+                    <td>
+                        <button class="btn" onclick="editProduct(${index})">Edit</button>
+                        <button class="btn btn-danger" onclick="deleteProduct(${index})">Delete</button>
+                    </td>
+                `;
+                
+                productsTable.appendChild(row);
+            });
+            
+            // Save default products if not exists
+            if (localStorage.getItem('lunareign_products') === null) {
+                localStorage.setItem('lunareign_products', JSON.stringify(products));
+            }
+        }
+
+        // Add Product Button
+        addProductBtn.addEventListener('click', () => {
+            // Reset form
+            addEditProductForm.reset();
+            document.getElementById('productId').value = '';
+            productFormTitle.textContent = 'Add New Product';
+            
+            // Show form
+            productForm.style.display = 'block';
+        });
+
+        // Cancel Product Button
+        cancelProductBtn.addEventListener('click', () => {
+            // Hide form
+            productForm.style.display = 'none';
+        });
+
+        // Add/Edit Product Form Submission
+        addEditProductForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get form data
+            const productId = document.getElementById('productId').value;
+            const productName = document.getElementById('productName').value;
+            const productPrice = parseInt(document.getElementById('productPrice').value);
+            const productDescription = document.getElementById('productDescription').value;
+            const productImage = document.getElementById('productImage').value;
+            
+            // Get products
+            let products = JSON.parse(localStorage.getItem('lunareign_products')) || [];
+            
+            if (productId) {
+                // Edit existing product
+                const index = parseInt(productId);
+                products[index] = {
+                    id: products[index].id,
+                    name: productName,
+                    price: productPrice,
+                    description: productDescription,
+                    image: productImage
+                };
+                
+                showToast('Product updated successfully!');
+            } else {
+                // Add new product
+                const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
+                
+                products.push({
+                    id: newId,
+                    name: productName,
+                    price: productPrice,
+                    description: productDescription,
+                    image: productImage
+                  });
+                
+                showToast('Product added successfully!');
+            }
+            
+            // Save products
+            localStorage.setItem('lunareign_products', JSON.stringify(products));
+            
+            // Reload products
+            loadProducts();
+            
+            // Hide form
+            productForm.style.display = 'none';
+        });
+
+        // Edit Product
+        function editProduct(index) {
+            // Get products
+            const products = JSON.parse(localStorage.getItem('lunareign_products')) || [];
+            const product = products[index];
+            
+            // Fill form
+            document.getElementById('productId').value = index;
+            document.getElementById('productName').value = product.name;
+            document.getElementById('productPrice').value = product.price;
+            document.getElementById('productDescription').value = product.description;
+            document.getElementById('productImage').value = product.image;
+            
+            // Update form title
+            productFormTitle.textContent = 'Edit Product';
+            
+            // Show form
+            productForm.style.display = 'block';
+        }
+
+        // Delete Product
+        function deleteProduct(index) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                // Get products
+                const products = JSON.parse(localStorage.getItem('lunareign_products')) || [];
+                
+                // Remove product
+                products.splice(index, 1);
+                
+                // Save back to localStorage
+                localStorage.setItem('lunareign_products', JSON.stringify(products));
+                
+                // Reload products
+                loadProducts();
+                
+                // Show message
+          showToast('Product deleted successfully!');
+            }
+        }
+
+        // Show Toast Notification
+        function showToast(message, type = 'success') {
+            toast.textContent = message;
+            toast.className = 'toast show';
+            
+            if (type === 'error') {
+                toast.style.backgroundColor = '#d9534f';
+                toast.style.color = 'white';
+            } else {
+                toast.style.backgroundColor = 'var(--gold)';
+                toast.style.color = 'var(--black)';
+            }
+            
+            // Hide after 3 seconds
+            setTimeout(() => {
+                toast.className = 'toast';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
